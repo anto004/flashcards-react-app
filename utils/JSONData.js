@@ -20,7 +20,7 @@ const state = {
 const dummyData = {
     React: {
         title: 'React',
-            questions: [
+            cards: [
             {
                 question: 'What is React?',
                 answer: 'A library for managing user interfaces'
@@ -33,7 +33,7 @@ const dummyData = {
     },
     JavaScript: {
         title: 'JavaScript',
-            questions: [
+            cards: [
             {
                 question: 'What is a closure?',
                 answer: 'The combination of a function and the lexical environment within which that function was declared.'

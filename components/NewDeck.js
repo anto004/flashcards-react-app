@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {View, Text, TextInput, StyleSheet} from "react-native";
+import {View, Text, TextInput, StyleSheet, AsyncStorage} from "react-native";
 import {TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {addCard, addDeck} from "../actions";
+import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
+import {saveDeckTitle} from "../utils/api"
 
 //TODO Create component for Card
 //Save title to redux
@@ -16,6 +18,19 @@ class NewDeck extends Component{
         question: "",
         answer: ""
     };
+
+    componentDidMount(){
+        //fetching data from database and saving to redux
+        fetchFlashCardResults()
+            .then((results) => {
+                const decks = JSON.parse(results);
+                Object.keys(decks).map((deck) => {
+                    const deckEntry = {"id": decks[deck].id, "title": decks[deck].title};
+                    const cards = decks[deck].cards; // returns an array of cards
+                    this.props.boundAddDeck(deckEntry);
+                });
+            })
+    }
 
     createNewCard = (deckId) =>{
         const uuid = require("uuid/v4");
@@ -41,8 +56,14 @@ class NewDeck extends Component{
         const newCard = this.createNewCard(newDeck.id);
         console.log("newDeck", newDeck);
         console.log("newCard", newCard);
+        //save to Redux
         this.props.boundAddDeck(newDeck);
         this.props.boundAddCard(newCard);
+
+        //Save to AsyncStorage
+        saveDeckTitle(newDeck.id, newDeck.title);
+
+
     };
     render(){
         return(
@@ -71,7 +92,7 @@ class NewDeck extends Component{
 
 function mapStateToProps(state) {
     return {
-
+        state
     }
 }
 
