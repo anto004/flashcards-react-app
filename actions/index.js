@@ -1,6 +1,7 @@
 export const ADD_ALL_DECKS = "ADD_ALL_DECKS";
 export const ADD_DECK = "ADD_DECK";
 export const ADD_CARD = "ADD_CARD";
+export const ADD_ALL_CARDS = "ADD_ALL_CARDS";
 
 /**
  *
@@ -30,4 +31,9 @@ export const addDeck = (deck) => ({
 export const addCard = (card) => ({
     type: ADD_CARD,
     card
+});
+
+export const addAllCards = (cards) => ({
+    type: ADD_ALL_CARDS,
+    cards
 });

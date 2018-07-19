@@ -17,6 +17,20 @@ const state = {
     deck: [deck],
     card: [card]
 };
+
+const myDummyData = {
+    "Hobbies":{
+        "id":"23bd17af-a6a9-4296-9f59-40b063805062",
+        "title":"Hobbies",
+        "cards":[]
+    },
+    "Home":{
+        "id":"1a1fdae2-71a7-4933-805a-a11e5778ade6",
+        "title":"Home",
+        "cards":[]
+    }
+};
+
 const dummyData = {
     React: {
         title: 'React',

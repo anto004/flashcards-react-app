@@ -1,4 +1,4 @@
-import {ADD_ALL_DECKS, ADD_DECK, ADD_CARD} from "../actions";
+import {ADD_ALL_DECKS, ADD_DECK, ADD_CARD, ADD_ALL_CARDS} from "../actions";
 
 export const DECK = "deck";
 export const CARD = "card";
@@ -9,7 +9,7 @@ const initialDeckState = {
 };
 
 export const reducer = (state = initialDeckState, action) => {
-    const {decks, deck, card} = action;
+    const {decks, deck, card, cards} = action;
 
     switch(action.type){
         case ADD_ALL_DECKS:
@@ -27,6 +27,11 @@ export const reducer = (state = initialDeckState, action) => {
             return{
                 ...state,
                 [CARD]: state[CARD].concat([card])
+            };
+        case ADD_ALL_CARDS:
+            return{
+                ...state,
+                [CARD]: state[CARD].concat([cards])
             };
         default:
             return state;

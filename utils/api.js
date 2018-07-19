@@ -29,6 +29,25 @@ export const saveDeckTitle = (id, title) => {
         });
 };
 
+export const saveCard = (card) => {
+    fetchFlashCardResults()
+        .then((results) => {
+            const decks = JSON.parse(results);
+            Object.keys(decks).map((deck) => {
+                if(decks[deck].id === card.deckId){
+                    decks[deck].cards.push(card)
+                }
+            });
+            //save new flashcards to database
+            return AsyncStorage.mergeItem(FLASHCARD_KEY, JSON.stringify(decks),
+                () => {
+                    AsyncStorage.getItem(FLASHCARD_KEY, (err, results) => {
+                        console.log("saveDeckTile merge results", results)
+                    })
+                });
+        });
+};
+
 
 export function removeAllFlashCards() {
     return AsyncStorage.removeItem(FLASHCARD_KEY)
