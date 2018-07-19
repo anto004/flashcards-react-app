@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {addCard, addDeck, addAllCards} from "../actions";
 import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
 import {saveDeckTitle, saveCard} from "../utils/api"
+import DeckListView from "./DeckListView";
 
 //TODO Create component for Card
 //TODO Create component for NewDeck
@@ -19,26 +20,6 @@ class NewDeck extends Component{
         question: "",
         answer: ""
     };
-
-    componentDidMount(){
-        //fetching data from database and saving to redux
-        fetchFlashCardResults()
-            .then((results) => {
-                if(results){
-                    console.log("results", results);
-                    const decks = JSON.parse(results);
-                    Object.keys(decks).map((deck) => {
-                        const deckEntry = {"id": decks[deck].id, "title": decks[deck].title};
-                        this.props.boundAddDeck(deckEntry);
-
-                        const cards = decks[deck].cards; // returns an array of cards
-                        if(cards.length > 0){
-                            this.props.boundAddAllCards(cards);
-                        }
-                    });
-                }
-            })
-    }
 
     createNewCard = (deckId) =>{
         const uuid = require("uuid/v4");
@@ -91,6 +72,7 @@ class NewDeck extends Component{
                 <TouchableOpacity onPress={this.submit}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
+                <DeckListView/>
             </View>
         );
     }
