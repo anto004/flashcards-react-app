@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
+
 
 class DeckListView extends Component{
 
@@ -29,14 +30,22 @@ class DeckListView extends Component{
             })
     }
 
+    goToDeck = (id) => {
+        this.props.navigation.navigate(
+            "Deck",
+            {"deckId": id})
+    };
+
     render(){
         const {decks} = this.props;
         return(
             <View style={styles.container}>
                 {decks && decks.map((deck) => (
-                    <Text key={deck.id}>
-                        {deck.title}
-                    </Text>
+                    <View key={deck.id}>
+                        <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
+                            <Text>{deck.title}</Text>
+                        </TouchableOpacity>
+                    </View>
                 ))}
             </View>
         )
@@ -63,6 +72,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+
     },
 });
 

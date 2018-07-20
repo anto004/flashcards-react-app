@@ -5,8 +5,10 @@ import {Provider} from "react-redux";
 import {reducer} from "./reducers/index";
 import {logger} from "redux-logger";
 import DeckListView from "./components/DeckListView";
+import DeckView from "./components/DeckView";
 import {Constants} from "expo";
 import {darkGreen} from "./utils/colors";
+import {createStackNavigator} from "react-navigation";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;  // To add Redux dev tools to applyMiddleware
 const store = createStore(
@@ -27,13 +29,22 @@ const FlashcardStatusBar = ({backgroundColor, ...props}) => {
     )
 };
 
+const MainNavigator = createStackNavigator({
+    Decks: {
+        screen: DeckListView
+    },
+    Deck: {
+        screen: DeckView
+    }
+});
+
 export default class App extends React.Component {
   render() {
     return (
         <Provider store={store}>
             <View style={{flex: 1}}>
                 <FlashcardStatusBar backgroundColor={darkGreen} barStyle="light-content"/>
-                <DeckListView/>
+                <MainNavigator style={{justifyContent: "center"}}/>
             </View>
         </Provider>
     );
