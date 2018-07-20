@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
+import NewDeck from "./NewDeck";
 
 
 class DeckListView extends Component{
@@ -38,13 +39,15 @@ class DeckListView extends Component{
 
     render(){
         const {decks} = this.props;
+        console.log("Decks",decks);
         return(
             <View style={styles.container}>
                 {decks && decks.map((deck) => (
-                    <View key={deck.id}>
+                    <View key={deck.id} style={styles.decks}>
                         <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
                             <Text>{deck.title}</Text>
                         </TouchableOpacity>
+                        <Text>No of Cards: {deck.noOfCards}</Text>
                     </View>
                 ))}
             </View>
@@ -53,8 +56,15 @@ class DeckListView extends Component{
 }
 
 function mapStateToProps(state, props) {
+    const decksWithCardNo = state[DECK].map((deck) => {
+        return {
+            ...deck,
+            "noOfCards": state[CARD].filter((card) => card.deckId === deck.id).length
+        }
+    });
     return{
-        decks: state[DECK]
+        decks: decksWithCardNo
+
     }
 }
 
@@ -74,6 +84,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
 
     },
+    decks: {
+        margin: 10
+    }
 });
 
 export default connect(mapStateToProps, dispatchStateToProps) (DeckListView);

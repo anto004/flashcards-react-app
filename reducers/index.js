@@ -31,7 +31,7 @@ export const reducer = (state = initialDeckState, action) => {
         case ADD_ALL_CARDS:
             return{
                 ...state,
-                [CARD]: state[CARD].concat([cards])
+                [CARD]: state[CARD].concat(cards)
             };
         default:
             return state;

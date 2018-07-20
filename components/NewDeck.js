@@ -72,7 +72,6 @@ class NewDeck extends Component{
                 <TouchableOpacity onPress={this.submit}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
-                <DeckListView/>
             </View>
         );
     }
@@ -81,7 +80,6 @@ class NewDeck extends Component{
 
 function mapStateToProps(state) {
     return {
-        state
     }
 }
 
