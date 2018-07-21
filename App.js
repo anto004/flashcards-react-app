@@ -9,6 +9,8 @@ import DeckView from "./components/DeckView";
 import {Constants} from "expo";
 import {darkGreen} from "./utils/colors";
 import {createStackNavigator} from "react-navigation";
+import QuizView from "./components/QuizView";
+import NewCard from "./components/NewCard";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;  // To add Redux dev tools to applyMiddleware
 const store = createStore(
@@ -35,6 +37,12 @@ const MainNavigator = createStackNavigator({
     },
     Deck: {
         screen: DeckView
+    },
+    AddCard: {
+        screen: NewCard
+    },
+    Quiz: {
+        screen: QuizView
     }
 });
 

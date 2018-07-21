@@ -7,6 +7,20 @@ import {black, white} from "../utils/colors";
 
 class DeckView extends Component{
 
+    addCard = (deckId) =>{
+        this.props.navigation.navigate(
+            "AddCard",
+            {"deckId": deckId}
+        )
+    };
+
+    goToQuiz = (deckId) =>{
+        this.props.navigation.navigate(
+            "Quiz",
+            {"deckId": deckId}
+        )
+    };
+
     render(){
         const {deck, cards} = this.props;
         const noOfCards = cards.length;
@@ -18,8 +32,14 @@ class DeckView extends Component{
                     <Text>No of cards: {noOfCards}</Text>
                 </View>
 
-                <FlashcardsButton style={{backgroundColor: white}}> Add Card </FlashcardsButton>
-                <FlashcardsButton style={{backgroundColor: black}}> Start Quiz </FlashcardsButton>
+                <FlashcardsButton style={{backgroundColor: white}}
+                                  onPress={() => this.addCard(deck.id)}>
+                    <Text>Add Card</Text>
+                </FlashcardsButton>
+                <FlashcardsButton style={{backgroundColor: black}}
+                                  onPress={() => this.goToQuiz(deck.id)}>
+                    <Text>Start Quiz</Text>
+                </FlashcardsButton>
 
                 {cards.map((card) => (
                     <View key={card.id}>

@@ -8,9 +8,8 @@ import {saveDeckTitle, saveCard} from "../utils/api"
 import DeckListView from "./DeckListView";
 
 
-class NewDeck extends Component{
+class NewCard extends Component{
     state = {
-        title: "",
         question: "",
         answer: ""
     };
@@ -26,34 +25,20 @@ class NewDeck extends Component{
         }
     };
 
-    createNewDeck = () => {
-        const uuid = require("uuid/v4");
-        const id = uuid();
-        return {
-            "id": id,
-            "title": this.state.title
-        }
-    };
-    submit = () =>{
-        const newDeck = this.createNewDeck();
-        const newCard = this.createNewCard(newDeck.id);
+    submit = (deckId) =>{
+        //save to redux
+        this.props.boundAddCard(this.createNewCard(deckId));
 
-        //save to Redux
-        this.props.boundAddDeck(newDeck);
-        this.props.boundAddCard(newCard);
-
-        //Save to AsyncStorage
-        saveDeckTitle(newDeck.id, newDeck.title)
-            .then(saveCard(newCard));
+        //TODO: Save to AsyncStorage
+        // saveDeckTitle(newDeck.id, newDeck.title)
+        //     .then(saveCard(newCard));
 
     };
     render(){
+        const {deckId} = this.props;
         return(
             <View>
-                <TextInput placeholder={"Enter Title"}
-                           onChangeText={(title) => this.setState({title})}
-                >
-                </TextInput>
+
                 <TextInput placeholder={"Enter Question"}
                            onChangeText={(question) => this.setState({question})}
                 >
@@ -63,7 +48,7 @@ class NewDeck extends Component{
                 >
                 </TextInput>
 
-                <TouchableOpacity onPress={this.submit}>
+                <TouchableOpacity onPress={() => this.submit(deckId)}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -72,8 +57,9 @@ class NewDeck extends Component{
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps(state, {navigation}) {
     return {
+        deckId: navigation.state.params.deckId
     }
 }
 
@@ -85,4 +71,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewDeck)
+export default connect(mapStateToProps, mapDispatchToProps)(NewCard)

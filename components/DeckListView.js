@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
-import NewDeck from "./NewDeck";
 
 
 class DeckListView extends Component{
@@ -33,8 +32,8 @@ class DeckListView extends Component{
 
     goToDeck = (id) => {
         this.props.navigation.navigate(
-            "Deck",
-            {"deckId": id})
+            "Deck", //go to DeckView with single Deck
+            {"deckId": id}) //passing deckId as parameter
     };
 
     render(){

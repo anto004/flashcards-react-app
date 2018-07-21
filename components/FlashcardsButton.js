@@ -3,7 +3,6 @@ import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import {black, white} from "../utils/colors";
 
 export default FlashcardsButton = ({children, style, onPress}) => {
-    console.log("children", children);
     return (
         <TouchableOpacity style = {[styles.button, style]}
                           onPress = {onPress}>
