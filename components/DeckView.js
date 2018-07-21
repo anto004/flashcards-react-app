@@ -2,15 +2,25 @@ import React, {Component} from "react";
 import {View, Text, StyleSheet} from "react-native";
 import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
+import FlashcardsButton from "./FlashcardsButton";
+import {black, white} from "../utils/colors";
 
 class DeckView extends Component{
 
     render(){
         const {deck, cards} = this.props;
+        const noOfCards = cards.length;
         console.log("Cards", cards);
         return(
             <View style={styles.container}>
-                <Text>{deck.title}</Text>
+                <View style={styles.decks}>
+                    <Text>{deck.title}</Text>
+                    <Text>No of cards: {noOfCards}</Text>
+                </View>
+
+                <FlashcardsButton style={{backgroundColor: white}}> Add Card </FlashcardsButton>
+                <FlashcardsButton style={{backgroundColor: black}}> Start Quiz </FlashcardsButton>
+
                 {cards.map((card) => (
                     <View key={card.id}>
                         <Text>{card.question}</Text>
@@ -44,6 +54,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    decks: {
+        marginBottom: 30
+    }
 });
 
 export default connect(mapStateToProps, dispatchStateToProps) (DeckView);

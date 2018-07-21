@@ -64,7 +64,6 @@ function mapStateToProps(state, props) {
     });
     return{
         decks: decksWithCardNo
-
     }
 }
 
