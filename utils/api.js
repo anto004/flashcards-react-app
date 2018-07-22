@@ -29,12 +29,12 @@ export const saveDeckTitle = (id, title) => {
         });
 };
 
-export const saveCard = (card) => {
+export const saveCard = (deckId, card) => {
     fetchFlashCardResults()
         .then((results) => {
             const decks = JSON.parse(results);
             Object.keys(decks).map((deck) => {
-                if(decks[deck].id === card.deckId){
+                if(decks[deck].id === deckId){
                     decks[deck].cards.push(card)
                 }
             });
@@ -47,7 +47,6 @@ export const saveCard = (card) => {
                 });
         });
 };
-
 
 export function removeAllFlashCards() {
     return AsyncStorage.removeItem(FLASHCARD_KEY)

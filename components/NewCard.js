@@ -26,12 +26,12 @@ class NewCard extends Component{
     };
 
     submit = (deckId) =>{
+        const newCard = this.createNewCard(deckId);
         //save to redux
-        this.props.boundAddCard(this.createNewCard(deckId));
+        this.props.boundAddCard(newCard);
 
-        //TODO: Save to AsyncStorage
-        // saveDeckTitle(newDeck.id, newDeck.title)
-        //     .then(saveCard(newCard));
+        //save to database
+        saveCard(deckId, newCard);
 
     };
     render(){

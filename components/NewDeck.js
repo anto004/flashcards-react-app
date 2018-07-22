@@ -44,7 +44,7 @@ class NewDeck extends Component{
 
         //Save to AsyncStorage
         saveDeckTitle(newDeck.id, newDeck.title)
-            .then(saveCard(newCard));
+            .then(saveCard(newCard.deckId, newCard));
 
     };
     render(){
