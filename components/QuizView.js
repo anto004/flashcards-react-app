@@ -16,19 +16,35 @@ import {black, lightYellow, white} from "../utils/colors";
 class QuizView extends Component{
 
     state = {
-        index: 0
+        index: 0,
+        value: 0
     };
 
-    flashcardPos = new Animated.Value(0);
-    screenWidth = Dimensions.get("window").width;
+    constructor(props){
+        super(props)
+        this.flashcardPos = new Animated.Value(0);
+        //TODO replace flashcardPos with animatedValue
+        this.animatedValue = new Animated.Value(0);
+        this.animatedValue.addListener(({value}) => this.setState({value}));
+        this.screenWidth = Dimensions.get("window").width;
+    }
 
     flashcardPanResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
+
         onPanResponderMove: (event, gesture) => {
             this.flashcardPos.setValue(gesture.dx);
         },
+
         onPanResponderRelease: (event, gesture) => {
-            if(Math.abs(gesture.dx) > this.screenWidth * 0.4){ //release view if swiped > 40%
+            //flip card if user didn't move the card on touched
+            if(gesture.dx === 0 && gesture.dy === 0){
+                this.flipCardAnimation();
+                return;
+            }
+
+            //release view if swiped > 40%
+            if(Math.abs(gesture.dx) > this.screenWidth * 0.4){
                 const direction = Math.sign(gesture.dx);
                 Animated.timing(
                     this.flashcardPos,
@@ -48,14 +64,14 @@ class QuizView extends Component{
                     }
                 ).start()
             }
+            console.log("Released", "x, y", gesture.dx, ", ", gesture.dy);
         }
     });
 
     handleSwipe = (indexDirection) => {
         const {cards} = this.props;
         const nextIndex = this.state.index + indexDirection;
-
-        if (nextIndex >= cards.length || nextIndex <= 0) {
+        if (nextIndex >= cards.length || nextIndex < 0) {
             Animated.spring(
                 this.flashcardPos,
                 {
@@ -65,30 +81,92 @@ class QuizView extends Component{
             return;
         }
 
-        this.setState((prevState) => ({
-            index: nextIndex //if swiped left decrement index, swiped right increment index
+        this.setState(() => ({
+            index: nextIndex
         }));
+        //animate from edge to 0
         this.flashcardPos.setValue(indexDirection * this.screenWidth);
         Animated.spring(
             this.flashcardPos,
             {
-                toValue: 0, //animate from edge to 0
+                toValue: 0,
                 duration: 250
             }
         ).start();
     };
+
+    flipCardAnimation = () => {
+        if (this.state.value >= 90) {
+           this.setState({value: 0}, () => {
+               Animated.spring(
+                   this.animatedValue,
+                   {
+                       toValue: 0,
+                       tension: 10,
+                       friction: 8,
+                   }).start(() => {
+                   this.setState({value: 0})
+               });
+           })
+        }
+        else {
+            this.setState({value: 180}, () => {
+                Animated.spring(
+                    this.animatedValue,
+                    {
+                        toValue: 180,
+                        tension: 10,
+                        friction: 8,
+                    }).start();
+            })
+        }
+    };
+
+    flipCardFront = () => {
+        const setInterpolateFront = this.animatedValue.interpolate({
+            inputRange: [0, 45, 90, 180, 225, 270, 315],
+            outputRange: ["0deg", "45deg", "90deg", "180deg", "135deg", "90deg", "45deg"]
+        });
+        return {
+            transform: [
+                {rotateY: setInterpolateFront}
+            ]
+        }
+    };
+
+    flipCardBack = () => {
+        const setInterpolateBack = this.animatedValue.interpolate({
+            inputRange: [0, 45, 90, 135, 180, 225, 270, 315],
+            outputRange: ["180deg","135deg", "90deg", "45deg", "0deg", "45deg", "900deg", "135deg"]
+        });
+       return {
+           transform: [
+               {rotateY: setInterpolateBack}
+           ]
+       }
+    };
+
     render(){
         const {cards} = this.props;
         return(
             <View style={styles.container}>
                 <Text style={{color: white}}>Quiz View</Text>
-                <Animated.View
-                    {...this.flashcardPanResponder.panHandlers}
-                    style={[{left: this.flashcardPos}, styles.flashcard]}>
-                    <Text style={styles.flashcardText}>
-                        {cards[this.state.index].question}
-                    </Text>
-                </Animated.View>
+                {this.state.value >= 0 && this.state.value <= 90
+                    ? <Animated.View
+                        {...this.flashcardPanResponder.panHandlers}
+                        style={[{left: this.flashcardPos}, this.flipCardFront(), styles.flashcard]}>
+                        <Text style={styles.flashcardText}>
+                            {cards[this.state.index].question}
+                        </Text>
+                    </Animated.View>
+                    : <Animated.View
+                        {...this.flashcardPanResponder.panHandlers}
+                        style={[{left: this.flashcardPos}, this.flipCardBack(), styles.flashcard]}>
+                        <Text style={styles.flashcardText}>
+                            {cards[this.state.index].answer}
+                        </Text>
+                    </Animated.View>
+                }
             </View>
         )
     }
