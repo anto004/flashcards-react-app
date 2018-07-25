@@ -6,6 +6,8 @@ import {addCard, addDeck, addAllCards} from "../actions";
 import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
 import {saveDeck, saveCard} from "../utils/api"
 import DeckListView from "./DeckListView";
+import {black, white} from "../utils/colors";
+import FlashcardsButton from "./FlashcardsButton";
 
 
 class NewCard extends Component{
@@ -37,25 +39,62 @@ class NewCard extends Component{
     render(){
         const {deckId} = this.props;
         return(
-            <View>
-
-                <TextInput placeholder={"Enter Question"}
-                           onChangeText={(question) => this.setState({question})}
-                >
-                </TextInput>
-                <TextInput placeholder={"Enter Answer"}
-                           onChangeText={(answer) => this.setState({answer})}
-                >
-                </TextInput>
-
-                <TouchableOpacity onPress={() => this.submit(deckId)} disabled={!this.state.question || !this.state.answer}>
-                    <Text>Submit</Text>
-                </TouchableOpacity>
+            <View style={styles.outerContainer}>
+                <Text style={styles.title}>Enter Question and Answer</Text>
+                <View style={styles.innerContainer}>
+                    <TextInput style={styles.text}
+                               placeholder={"question"}
+                               onChangeText={(question) => this.setState({question})}
+                    >
+                    </TextInput>
+                    <TextInput style={styles.text}
+                               placeholder={"answer"}
+                               onChangeText={(answer) => this.setState({answer})}
+                    >
+                    </TextInput>
+                    <FlashcardsButton style={{backgroundColor: black}}
+                                      onPress={() => this.submit(deckId)}
+                                      disabled={!this.state.question || !this.state.answer}>
+                        <Text>Submit</Text>
+                    </FlashcardsButton>
+                </View>
             </View>
         );
     }
 }
 
+const styles = StyleSheet.create({
+    outerContainer: {
+        flex: 1,
+        alignItems: "center",
+        backgroundColor: white,
+        borderWidth: 1,
+        borderColor: "gray",
+        padding: 22
+    },
+    innerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: white,
+        margin: 5,
+    },
+    title: {
+        paddingTop: 50,
+        fontSize: 32,
+        fontWeight: "bold",
+    },
+    text: {
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: black,
+        textDecorationLine: "underline",
+        width: 200,
+        height: 60,
+        padding: 18,
+        fontSize: 18,
+    }
+});
 
 function mapStateToProps(state, {navigation}) {
     return {

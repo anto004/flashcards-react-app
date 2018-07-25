@@ -2,10 +2,11 @@ import React from "react";
 import {View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import {black, white} from "../utils/colors";
 
-export default FlashcardsButton = ({children, style, onPress}) => {
+export default FlashcardsButton = ({children, style, onPress, ...props}) => {
     return (
         <TouchableOpacity style = {[styles.button, style]}
-                          onPress = {onPress}>
+                          onPress = {onPress}
+                          {...props}>
             <View style={styles.center}>
                 <Text style={[{color: style.backgroundColor === black ? white : black}, styles.text]}>
                     {children}
@@ -18,8 +19,8 @@ export default FlashcardsButton = ({children, style, onPress}) => {
 const styles = StyleSheet.create({
     button: {
         width: 160,
-        height: 70,
-        borderRadius: 3,
+        height: 60,
+        borderRadius: 4,
         padding: 15,
         margin: 10,
         borderWidth: 2,
