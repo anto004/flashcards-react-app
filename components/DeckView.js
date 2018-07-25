@@ -1,11 +1,28 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import FlashcardsButton from "./FlashcardsButton";
 import {black, white} from "../utils/colors";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
 class DeckView extends Component{
+
+    //Programmatically adding title to header
+    static navigationOptions = ({navigation}) => {
+        const {title: titleValue}= navigation.state.params;
+        return {
+            title: titleValue ? titleValue : "",
+            headerTitleStyle: {
+                fontSize: 30,
+                fontWeight: "bold"
+            }
+        }
+    };
+    componentDidMount(){
+        const {deck} = this.props;
+        this.props.navigation.setParams({title: deck.title})
+    }
 
     addCard = (deckId) =>{
         this.props.navigation.navigate(
@@ -21,32 +38,41 @@ class DeckView extends Component{
         )
     };
 
+    deleteCard = (id) => {
+        //TODO: delete card
+        // from redux
+        // from asyncstorage
+    };
+
+    deleteDeck = (id) => {
+        //TODO: delete deck
+        // from redux
+        // from asyncstorage
+    };
+
     render(){
         const {deck, cards} = this.props;
         const noOfCards = cards.length;
-        console.log("Cards", cards);
         return(
-            <View style={styles.container}>
-                <View style={styles.decks}>
-                    <Text>{deck.title}</Text>
-                    <Text>No of cards: {noOfCards}</Text>
-                </View>
-
-                <FlashcardsButton style={{backgroundColor: white}}
-                                  onPress={() => this.addCard(deck.id)}>
-                    <Text>Add Card</Text>
-                </FlashcardsButton>
-                <FlashcardsButton style={{backgroundColor: black}}
-                                  onPress={() => this.goToQuiz(deck.id)}>
-                    <Text>Start Quiz</Text>
-                </FlashcardsButton>
-
-                {cards.map((card) => (
-                    <View key={card.id}>
-                        <Text>{card.question}</Text>
-                        <Text>{card.answer}</Text>
+            <View style={styles.outerContainer}>
+                <TouchableOpacity onPress={() => this.deleteDeck(deck.id)}>
+                    <MaterialCommunityIcons style={styles.delete} name={"minus-circle-outline"} size={32} color={black}/>
+                </TouchableOpacity>
+                <View style={styles.innerContainer}>
+                    <View style={styles.decks}>
+                        <Text style={styles.title}>{deck.title}</Text>
+                        <Text style={styles.subtitle}>No of cards: {noOfCards}</Text>
                     </View>
-                ))}
+
+                    <FlashcardsButton style={{backgroundColor: white}}
+                                      onPress={() => this.addCard(deck.id)}>
+                        <Text>Add Card</Text>
+                    </FlashcardsButton>
+                    <FlashcardsButton style={{backgroundColor: black}}
+                                      onPress={() => this.goToQuiz(deck.id)}>
+                        <Text>Start Quiz</Text>
+                    </FlashcardsButton>
+                </View>
             </View>
         )
     }
@@ -64,18 +90,39 @@ function mapStateToProps(state, {navigation}) {
 
 function dispatchStateToProps(dispatch) {
     return{
+
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    outerContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: "gray"
+    },
+    innerContainer: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
     decks: {
-        marginBottom: 30
+        marginBottom: 30,
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: "bold",
+        fontFamily: "Arial"
+    },
+    subtitle: {
+        fontFamily: "Arial",
+        color: "gray",
+        textAlign: "center",
+    },
+    delete: {
+        alignSelf: "flex-end",
+        margin: 10
     }
 });
 

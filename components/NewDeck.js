@@ -1,29 +1,14 @@
 import React, {Component} from "react";
-import {View, Text, TextInput, StyleSheet, AsyncStorage} from "react-native";
+import {View, Text, TextInput} from "react-native";
 import {TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
-import {addCard, addDeck, addAllCards} from "../actions";
-import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
-import {saveDeckTitle, saveCard} from "../utils/api"
-import DeckListView from "./DeckListView";
+import {addDeck} from "../actions";
+import {saveDeck} from "../utils/api"
 
 
 class NewDeck extends Component{
     state = {
-        title: "",
-        question: "",
-        answer: ""
-    };
-
-    createNewCard = (deckId) =>{
-        const uuid = require("uuid/v4");
-        const id = uuid();
-        return {
-            "id": id,
-            "deckId": deckId,
-            "question": this.state.question,
-            "answer": this.state.answer
-        }
+        title: ""
     };
 
     createNewDeck = () => {
@@ -36,16 +21,12 @@ class NewDeck extends Component{
     };
     submit = () =>{
         const newDeck = this.createNewDeck();
-        const newCard = this.createNewCard(newDeck.id);
 
         //save to Redux
         this.props.boundAddDeck(newDeck);
-        this.props.boundAddCard(newCard);
 
         //Save to AsyncStorage
-        saveDeckTitle(newDeck.id, newDeck.title)
-            .then(saveCard(newCard.deckId, newCard));
-
+        saveDeck(newDeck.id, newDeck.title)
     };
     render(){
         return(
@@ -54,16 +35,8 @@ class NewDeck extends Component{
                            onChangeText={(title) => this.setState({title})}
                 >
                 </TextInput>
-                <TextInput placeholder={"Enter Question"}
-                           onChangeText={(question) => this.setState({question})}
-                >
-                </TextInput>
-                <TextInput placeholder={"Enter Answer"}
-                           onChangeText={(answer) => this.setState({answer})}
-                >
-                </TextInput>
 
-                <TouchableOpacity onPress={this.submit}>
+                <TouchableOpacity onPress={this.submit} disabled={!this.state.title}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
             </View>
@@ -80,8 +53,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return{
         boundAddDeck: (deck) => dispatch(addDeck(deck)),
-        boundAddCard: (card) => dispatch(addCard(card)),
-        boundAddAllCards: (cards) => dispatch(addAllCards(cards))
     }
 }
 

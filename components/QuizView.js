@@ -5,23 +5,27 @@ import {
     StyleSheet,
     Animated,
     Dimensions,
-    PanResponder
+    PanResponder, TouchableOpacity
 } from "react-native";
 import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import FlashcardsButton from "./FlashcardsButton";
-import {black, lightYellow, white} from "../utils/colors";
+import {black, darkGray, green, lightYellow, red, white} from "../utils/colors";
+import Modal from "react-native-modal";
+import {Ionicons} from "@expo/vector-icons";
 
 
 class QuizView extends Component{
 
     state = {
         index: 0,
-        value: 0
+        value: 0,
+        correctCount: 0,
+        visibleModal: false,
     };
 
     constructor(props){
-        super(props)
+        super(props);
         this.flashcardPos = new Animated.Value(0);
         //TODO replace flashcardPos with animatedValue
         this.animatedValue = new Animated.Value(0);
@@ -146,27 +150,89 @@ class QuizView extends Component{
        }
     };
 
+    correctHandle = (cardsSoFar, totalCards) => {
+        this.setState((prevState) => ({
+            correctCount: prevState.correctCount + 1}));
+
+        if(cardsSoFar >= totalCards){
+            this.setState({visibleModal: true});
+            return;
+        }
+
+        this.setState((prevState) => ({
+            index: prevState.index + 1}));
+    };
+
+    incorrectHandle = (cardsSoFar, totalCards) => {
+        if(cardsSoFar >= totalCards){
+            this.setState({visibleModal: true});
+            return;
+        }
+
+        this.setState((prevState) => ({
+            index: prevState.index + 1}));
+    };
+
+    percentageCalculation = (totalCards) => {
+        const percentage = (this.state.correctCount / totalCards) * 100;
+        return percentage >= 50 ? `You scored ${percentage}% 👍` : `You scored ${percentage}%📚`;
+    };
+
+    closeModal = () => {
+        this.setState({visibleModal: false});
+        this.props.navigation.navigate("Deck");
+    };
+
     render(){
         const {cards} = this.props;
+        const totalCards = cards.length;
+        this.percentageCalculation(totalCards);
+        if(this.state.visibleModal){
+        }
         return(
-            <View style={styles.container}>
-                <Text style={{color: white}}>Quiz View</Text>
-                {this.state.value >= 0 && this.state.value <= 90
-                    ? <Animated.View
-                        {...this.flashcardPanResponder.panHandlers}
-                        style={[{left: this.flashcardPos}, this.flipCardFront(), styles.flashcard]}>
-                        <Text style={styles.flashcardText}>
-                            {cards[this.state.index].question}
-                        </Text>
-                    </Animated.View>
-                    : <Animated.View
-                        {...this.flashcardPanResponder.panHandlers}
-                        style={[{left: this.flashcardPos}, this.flipCardBack(), styles.flashcard]}>
-                        <Text style={styles.flashcardText}>
-                            {cards[this.state.index].answer}
-                        </Text>
-                    </Animated.View>
-                }
+            <View style={[styles.outerContainer]} >
+                <Text style={styles.cardsCount}>{`${this.state.index + 1}/${totalCards}`}</Text>
+                <View style={styles.innerContainer}>
+                    <Text style={{color: white}}>Quiz View</Text>
+                    {this.state.value >= 0 && this.state.value <= 90
+                        ? <Animated.View
+                            {...this.flashcardPanResponder.panHandlers}
+                            style={[{left: this.flashcardPos}, this.flipCardFront(), styles.flashcard]}>
+                            <Text style={styles.flashcardText}>
+                                {cards[this.state.index].question}
+                            </Text>
+                        </Animated.View>
+                        : <Animated.View
+                            {...this.flashcardPanResponder.panHandlers}
+                            style={[{left: this.flashcardPos}, this.flipCardBack(), styles.flashcard]}>
+                            <Text style={styles.flashcardText}>
+                                {cards[this.state.index].answer}
+                            </Text>
+                        </Animated.View>
+                    }
+                    <FlashcardsButton style={{backgroundColor: green}}
+                                      onPress={() => this.correctHandle(this.state.index + 1, totalCards)}>
+                        <Text>Correct</Text>
+                    </FlashcardsButton>
+                    <FlashcardsButton style={{backgroundColor: red}}
+                                      onPress={() => this.incorrectHandle(this.state.index + 1, totalCards)}>
+                        <Text>Incorrect</Text>
+                    </FlashcardsButton>
+                </View>
+
+                <Modal visible={this.state.visibleModal}
+                       animationType="fade"
+                       transparent={false}
+                       onRequestClose={this.closeModal}>
+                    <View style={styles.modalContent}>
+                        <TouchableOpacity style={{alignSelf: "flex-end"}}
+                                          onPress={() => this.closeModal()}>
+                            <Ionicons name={"md-close-circle"} size={30}/>
+                        </TouchableOpacity>
+                        <Text style={{fontSize: 22}}>{this.percentageCalculation(totalCards)}</Text>
+                    </View>
+                </Modal>
+
             </View>
         )
     }
@@ -186,9 +252,14 @@ function dispatchStateToProps(dispatch) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    outerContainer: {
         flex: 1,
-        backgroundColor: black,
+        backgroundColor: darkGray,
+        borderWidth: 1,
+        borderColor: "gray"
+    },
+    innerContainer: {
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -200,13 +271,27 @@ const styles = StyleSheet.create({
         padding: 15,
         width: 300,
         height: 200,
-        borderRadius: 3,
+        borderRadius: 4,
         backgroundColor: lightYellow,
     },
     flashcardText: {
         fontFamily: "Arial",
         fontSize: 24,
-    }
+    },
+    cardsCount: {
+        alignSelf: "flex-start",
+        margin: 10,
+        fontSize: 22,
+        color: black,
+    },
+    modalContent: {
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 22,
+        paddingBottom: 22,
+        borderRadius: 4,
+        borderColor: "rgba(0, 0, 0, 0.1)",
+    },
 });
 
 export default connect(mapStateToProps, dispatchStateToProps) (QuizView);

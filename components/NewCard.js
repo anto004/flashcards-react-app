@@ -4,7 +4,7 @@ import {TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {addCard, addDeck, addAllCards} from "../actions";
 import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
-import {saveDeckTitle, saveCard} from "../utils/api"
+import {saveDeck, saveCard} from "../utils/api"
 import DeckListView from "./DeckListView";
 
 
@@ -48,7 +48,7 @@ class NewCard extends Component{
                 >
                 </TextInput>
 
-                <TouchableOpacity onPress={() => this.submit(deckId)}>
+                <TouchableOpacity onPress={() => this.submit(deckId)} disabled={!this.state.question || !this.state.answer}>
                     <Text>Submit</Text>
                 </TouchableOpacity>
             </View>

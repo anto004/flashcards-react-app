@@ -13,7 +13,7 @@ export async function fetchFlashCardResults() {
     }
 }
 
-export const saveDeckTitle = (id, title) => {
+export const saveDeck = (id, title) => {
     const deck = {
         [title]: {
             "id": id,

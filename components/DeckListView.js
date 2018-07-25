@@ -1,14 +1,41 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from "react-native";
 import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
-
+import {MaterialIcons} from "@expo/vector-icons";
+import {lightGray} from "../utils/colors";
+import {AppLoading, Font} from "expo";
 
 class DeckListView extends Component{
+    state = {
+        fontLoaded: false
+    };
+
+    static navigationOptions = ({navigation}) => {
+        const font = navigation.state.params;
+        return {
+            headerTitleStyle: {
+                fontFamily: font ? font.name : "Arial",
+                fontSize: 52,
+                textAlign: "center",
+                // backgroundColor: "blue"
+            }
+        }
+    };
+
+    _loadFontsAsync = async () => {
+        await Font.loadAsync({"coolvetica-rg": require("../assets/fonts/coolvetica-rg.ttf")});
+        this.setState({fontLoaded: true}, () => {
+            this.props.navigation.setParams({name: "coolvetica-rg"});
+        });
+    };
 
     componentDidMount(){
+        //load font
+        this._loadFontsAsync();
+
         //fetching data from database and saving to redux
         fetchFlashCardResults()
             .then((results) => {
@@ -37,19 +64,25 @@ class DeckListView extends Component{
     };
 
     render(){
+        if (!this.state.fontLoaded) {
+            return (
+                <AppLoading/>
+            );
+        }
+
         const {decks} = this.props;
         console.log("Decks",decks);
         return(
-            <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.innerContainer}>
                 {decks && decks.map((deck) => (
                     <View key={deck.id} style={styles.decks}>
                         <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
-                            <Text>{deck.title}</Text>
+                            <Text style={styles.title}>{deck.title}</Text>
                         </TouchableOpacity>
                         <Text>No of Cards: {deck.noOfCards}</Text>
                     </View>
                 ))}
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -75,15 +108,28 @@ function dispatchStateToProps(dispatch) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    innerContainer: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-
+        backgroundColor: "black",
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        borderWidth: 1,
+        borderColor: "gray"
     },
     decks: {
-        margin: 10
+        padding: 10,
+        backgroundColor: lightGray,
+        borderBottomWidth: 1,
+        alignItems: "center"
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: "bold",
+        fontFamily: "Arial"
+    },
+    subtitle: {
+        fontFamily: "Arial",
+        color: "gray",
     }
 });
 
