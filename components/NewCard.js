@@ -1,11 +1,8 @@
 import React, {Component} from "react";
-import {View, Text, TextInput, StyleSheet, AsyncStorage} from "react-native";
-import {TouchableOpacity} from "react-native";
+import {View, Text, TextInput, StyleSheet} from "react-native";
 import {connect} from "react-redux";
 import {addCard, addDeck, addAllCards} from "../actions";
-import {fetchFlashCardResults, FLASHCARD_KEY, removeAllFlashCards} from "../utils/api";
-import {saveDeck, saveCard} from "../utils/api"
-import DeckListView from "./DeckListView";
+import {saveCard} from "../utils/api"
 import {black, white} from "../utils/colors";
 import FlashcardsButton from "./FlashcardsButton";
 
@@ -14,6 +11,17 @@ class NewCard extends Component{
     state = {
         question: "",
         answer: ""
+    };
+
+    static navigationOptions = ({navigation}) => {
+        const {title: titleValue}= navigation.state.params;
+        return {
+            title: titleValue ? titleValue : "",
+            headerTitleStyle: {
+                fontSize: 30,
+                fontWeight: "bold"
+            }
+        }
     };
 
     createNewCard = (deckId) =>{
@@ -34,6 +42,8 @@ class NewCard extends Component{
 
         //save to database
         saveCard(deckId, newCard);
+
+        this.props.navigation.goBack();
 
     };
     render(){

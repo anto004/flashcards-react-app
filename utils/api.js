@@ -53,7 +53,7 @@ export function removeAllFlashCards() {
         .then((results) => {
             console.log("Removed all flashcards", results)
         })
-};
+}
 
 
 

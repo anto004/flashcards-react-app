@@ -1,26 +1,27 @@
 import React from 'react';
-import {View, Text, StatusBar, Platform, TouchableOpacity} from 'react-native';
+import {View, Text, StatusBar, Platform, TouchableOpacity, AsyncStorage, ScrollView} from 'react-native';
 import {createStore, applyMiddleware, compose} from "redux";
 import {Provider} from "react-redux";
 import {reducer} from "./reducers/index";
 import {logger} from "redux-logger";
 import DeckListView from "./components/DeckListView";
 import {Constants} from "expo";
-import {black, darkGreen, lightGray, lightYellow} from "./utils/colors";
+import {black, darkGreen, lightGray, lightYellow, white} from "./utils/colors";
 import {createStackNavigator} from "react-navigation";
 import QuizView from "./components/QuizView";
 import NewCard from "./components/NewCard";
 import DeckView from "./components/DeckView";
 import {MaterialIcons} from "@expo/vector-icons";
 import NewDeck from "./components/NewDeck";
-
+import {setLocalNotification} from "./utils/helpers";
 
 /*
 Credits: font by http://www.typodermicfonts.com/
 */
 
+// To add Redux dev tools to applyMiddleware
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;  // To add Redux dev tools to applyMiddleware
 const store = createStore(
     reducer,
     composeEnhancers(
@@ -79,7 +80,13 @@ const MainNavigator = createStackNavigator({
     }
 });
 
+
 export default class App extends React.Component {
+
+    componentDidMount(){
+        setLocalNotification();
+    }
+
     render() {
         return (
             <Provider store={store}>

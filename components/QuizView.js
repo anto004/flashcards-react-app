@@ -8,7 +8,7 @@ import {
     PanResponder, TouchableOpacity
 } from "react-native";
 import {connect} from "react-redux";
-import{DECK, CARD} from "../reducers";
+import{CARD} from "../reducers";
 import FlashcardsButton from "./FlashcardsButton";
 import {black, darkGray, green, lightYellow, red, white} from "../utils/colors";
 import Modal from "react-native-modal";
@@ -27,11 +27,21 @@ class QuizView extends Component{
     constructor(props){
         super(props);
         this.flashcardPos = new Animated.Value(0);
-        //TODO replace flashcardPos with animatedValue
         this.animatedValue = new Animated.Value(0);
         this.animatedValue.addListener(({value}) => this.setState({value}));
         this.screenWidth = Dimensions.get("window").width;
     }
+
+    static navigationOptions = ({navigation}) => {
+        const {title: titleValue}= navigation.state.params;
+        return {
+            title: titleValue ? titleValue : "",
+            headerTitleStyle: {
+                fontSize: 30,
+                fontWeight: "bold"
+            }
+        }
+    };
 
     flashcardPanResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
@@ -68,7 +78,6 @@ class QuizView extends Component{
                     }
                 ).start()
             }
-            console.log("Released", "x, y", gesture.dx, ", ", gesture.dy);
         }
     });
 
@@ -192,8 +201,8 @@ class QuizView extends Component{
         return(
             <View style={[styles.outerContainer]} >
                 <Text style={styles.cardsCount}>{`${this.state.index + 1}/${totalCards}`}</Text>
+                <Text style={styles.title}>Quiz</Text>
                 <View style={styles.innerContainer}>
-                    <Text style={{color: white}}>Quiz View</Text>
                     {this.state.value >= 0 && this.state.value <= 90
                         ? <Animated.View
                             {...this.flashcardPanResponder.panHandlers}
@@ -238,19 +247,6 @@ class QuizView extends Component{
     }
 }
 
-function mapStateToProps(state, {navigation}) {
-    const deckId =  navigation.state.params.deckId;
-    return{
-        deckId: deckId,
-        cards: state[CARD].filter((card) => card.deckId === deckId)
-    }
-}
-
-function dispatchStateToProps(dispatch) {
-    return{
-    }
-}
-
 const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
@@ -292,6 +288,24 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderColor: "rgba(0, 0, 0, 0.1)",
     },
+    title: {
+        alignSelf: "center",
+        fontSize: 26,
+        fontWeight: "bold",
+    },
 });
+
+function mapStateToProps(state, {navigation}) {
+    const deckId =  navigation.state.params.deckId;
+    return{
+        deckId: deckId,
+        cards: state[CARD].filter((card) => card.deckId === deckId)
+    }
+}
+
+function dispatchStateToProps(dispatch) {
+    return{
+    }
+}
 
 export default connect(mapStateToProps, dispatchStateToProps) (QuizView);

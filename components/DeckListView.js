@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import{DECK, CARD} from "../reducers";
 import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
-import {MaterialIcons} from "@expo/vector-icons";
 import {lightGray} from "../utils/colors";
 import {AppLoading, Font} from "expo";
 
@@ -20,13 +19,13 @@ class DeckListView extends Component{
                 fontFamily: font ? font.name : "Arial",
                 fontSize: 52,
                 textAlign: "center",
-                // backgroundColor: "blue"
             }
         }
     };
 
     _loadFontsAsync = async () => {
         await Font.loadAsync({"coolvetica-rg": require("../assets/fonts/coolvetica-rg.ttf")});
+        await Font.loadAsync({"Arial": require("../assets/fonts/Arial.ttf")});
         this.setState({fontLoaded: true}, () => {
             this.props.navigation.setParams({name: "coolvetica-rg"});
         });
@@ -71,9 +70,8 @@ class DeckListView extends Component{
         }
 
         const {decks} = this.props;
-        console.log("Decks",decks);
         return(
-            <ScrollView contentContainerStyle={styles.innerContainer}>
+            <ScrollView contentContainerstyle={styles.innerContainer}>
                 {decks && decks.map((deck) => (
                     <View key={deck.id} style={styles.decks}>
                         <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
@@ -109,7 +107,7 @@ function dispatchStateToProps(dispatch) {
 
 const styles = StyleSheet.create({
     innerContainer: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: "black",
         alignItems: 'stretch',
         justifyContent: 'flex-start',

@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {View, Text, TextInput, StyleSheet} from "react-native";
-import {TouchableOpacity} from "react-native";
 import {connect} from "react-redux";
 import {addDeck} from "../actions";
 import {saveDeck} from "../utils/api"
@@ -11,6 +10,16 @@ import FlashcardsButton from "./FlashcardsButton";
 class NewDeck extends Component{
     state = {
         title: ""
+    };
+
+    static navigationOptions = ({navigation}) => {
+        return {
+            title: "Deck",
+            headerTitleStyle: {
+                fontSize: 30,
+                fontWeight: "bold"
+            }
+        }
     };
 
     createNewDeck = () => {
@@ -28,7 +37,9 @@ class NewDeck extends Component{
         this.props.boundAddDeck(newDeck);
 
         //Save to AsyncStorage
-        saveDeck(newDeck.id, newDeck.title)
+        saveDeck(newDeck.id, newDeck.title);
+
+        this.props.navigation.goBack();
     };
     render(){
         return(

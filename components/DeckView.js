@@ -5,6 +5,7 @@ import{DECK, CARD} from "../reducers";
 import FlashcardsButton from "./FlashcardsButton";
 import {black, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {clearLocalNotification, setLocalNotification} from "../utils/helpers";
 
 class DeckView extends Component{
 
@@ -25,17 +26,28 @@ class DeckView extends Component{
     }
 
     addCard = (deckId) =>{
+        const {deck} = this.props;
         this.props.navigation.navigate(
             "AddCard",
-            {"deckId": deckId}
+            {
+                "deckId": deckId,
+                "title": deck.title,
+            }
         )
     };
 
     goToQuiz = (deckId) =>{
+        const {deck} = this.props;
         this.props.navigation.navigate(
             "Quiz",
-            {"deckId": deckId}
-        )
+            {
+                "deckId": deckId,
+                "title": deck.title,
+            }
+        );
+
+        clearLocalNotification()
+            .then(setLocalNotification)
     };
 
     deleteCard = (id) => {
@@ -69,7 +81,8 @@ class DeckView extends Component{
                         <Text>Add Card</Text>
                     </FlashcardsButton>
                     <FlashcardsButton style={{backgroundColor: black}}
-                                      onPress={() => this.goToQuiz(deck.id)}>
+                                      onPress={() => this.goToQuiz(deck.id)}
+                                      disabled={!(noOfCards > 0)}>
                         <Text>Start Quiz</Text>
                     </FlashcardsButton>
                 </View>
@@ -79,9 +92,7 @@ class DeckView extends Component{
 }
 
 function mapStateToProps(state, {navigation}) {
-    //Get the cards with a specific deckId
     const {deckId} = navigation.state.params;
-    console.log("DeckView deckId", deckId);
     return{
         deck: state[DECK].filter((deck) => deck.id === deckId)[0],
         cards: state[CARD].filter((card) => card.deckId === deckId)
@@ -90,7 +101,6 @@ function mapStateToProps(state, {navigation}) {
 
 function dispatchStateToProps(dispatch) {
     return{
-
     }
 }
 
