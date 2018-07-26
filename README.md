@@ -4,7 +4,7 @@ flashcards runs on both android and ios
 
 flashcards was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
-##install:
+## install:
 *  install [Expo App](https://expo.io) on your phone
 * `npm install`
 * `npm start`
