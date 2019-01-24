@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, TextInput, StyleSheet} from "react-native";
+import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView} from "react-native";
 import {connect} from "react-redux";
 import {addCard, addDeck, addAllCards} from "../actions";
 import {saveCard} from "../utils/api"
@@ -49,7 +49,10 @@ class NewCard extends Component{
     render(){
         const {deckId} = this.props;
         return(
-            <View style={styles.outerContainer}>
+            <KeyboardAvoidingView
+                style={styles.outerContainer}
+                behavior="position"
+                enabled>
                 <Text style={styles.title}>Enter Question and Answer</Text>
                 <View style={styles.innerContainer}>
                     <TextInput style={styles.text}
@@ -68,7 +71,8 @@ class NewCard extends Component{
                         <Text>Submit</Text>
                     </FlashcardsButton>
                 </View>
-            </View>
+              <View></View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -77,22 +81,27 @@ const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: white,
+        justifyContent: "flex-start",
+        backgroundColor: "white",
         borderWidth: 1,
         borderColor: "gray",
         padding: 22
     },
+    title: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "center",
+      paddingTop: 40,
+      fontSize: 32,
+      fontWeight: "bold",
+      backgroundColor: "white"
+    },
     innerContainer: {
-        flex: 1,
+        flex: 3,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: white,
-        margin: 5,
-    },
-    title: {
-        paddingTop: 50,
-        fontSize: 32,
-        fontWeight: "bold",
+        backgroundColor: "white",
     },
     text: {
         borderRadius: 4,
