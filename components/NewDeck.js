@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, TextInput, StyleSheet} from "react-native";
+import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView} from "react-native";
 import {connect} from "react-redux";
 import {addDeck} from "../actions";
 import {saveDeck} from "../utils/api"
@@ -45,18 +45,21 @@ class NewDeck extends Component{
         return(
             <View style={styles.outerContainer}>
                 <Text style={styles.title}>Enter New Deck Title</Text>
-                <View style={styles.innerContainer}>
-                    <TextInput style={styles.inputText}
-                               placeholder={"deck title..."}
-                               onChangeText={(title) => this.setState({title})}
-                    >
-                    </TextInput>
-                    <FlashcardsButton style={{backgroundColor:black}}
-                                      onPress={this.submit}
-                                      disabled={!this.state.title}>
-                        <Text>Submit</Text>
-                    </FlashcardsButton>
-                </View>
+                <KeyboardAvoidingView
+                    style={styles.innerContainer}
+                    behavior="padding"
+                    enabled>
+                  <TextInput style={styles.inputText}
+                             placeholder={"deck title..."}
+                             onChangeText={(title) => this.setState({title})}
+                  >
+                  </TextInput>
+                  <FlashcardsButton style={{backgroundColor:black}}
+                                    onPress={this.submit}
+                                    disabled={!this.state.title}>
+                    <Text>Submit</Text>
+                  </FlashcardsButton>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -66,21 +69,24 @@ const styles = StyleSheet.create({
     outerContainer: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: white,
+        justifyContent: "flex-start",
+        backgroundColor: "white",
         borderWidth: 1,
         borderColor: "gray",
         padding: 22
     },
-   innerContainer: {
-       flex: 1,
-       justifyContent: "center",
-       alignItems: "center",
-       backgroundColor: white,
-   },
+    innerContainer: {
+        flex: 3,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: "white",
+    },
     title: {
+        flex: 1,
         paddingTop: 50,
         fontSize: 32,
         fontWeight: "bold",
+        backgroundColor: "white"
     },
     inputText: {
         borderRadius: 4,

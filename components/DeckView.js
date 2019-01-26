@@ -15,6 +15,7 @@ class DeckView extends Component{
         return {
             title: titleValue ? titleValue : "",
             headerTitleStyle: {
+                fontFamily: "coolvetica-rg",
                 fontSize: 30,
                 fontWeight: "bold"
             }
@@ -71,20 +72,22 @@ class DeckView extends Component{
                     <MaterialCommunityIcons style={styles.delete} name={"minus-circle-outline"} size={32} color={black}/>
                 </TouchableOpacity>
                 <View style={styles.innerContainer}>
-                    <View style={styles.decks}>
+                    <View style={[styles.decks]}>
                         <Text style={styles.title}>{deck.title}</Text>
-                        <Text style={styles.subtitle}>No of cards: {noOfCards}</Text>
+                        <Text style={styles.subtitle}>Cards: {noOfCards}</Text>
                     </View>
 
-                    <FlashcardsButton style={{backgroundColor: white}}
-                                      onPress={() => this.addCard(deck.id)}>
-                        <Text>Add Card</Text>
-                    </FlashcardsButton>
-                    <FlashcardsButton style={{backgroundColor: black}}
-                                      onPress={() => this.goToQuiz(deck.id)}
-                                      disabled={!(noOfCards > 0)}>
-                        <Text>Start Quiz</Text>
-                    </FlashcardsButton>
+                    <View style={styles.buttonsContainerCenter}>
+                        <FlashcardsButton style={{backgroundColor: white}}
+                                          onPress={() => this.addCard(deck.id)}>
+                          <Text>Add Card</Text>
+                        </FlashcardsButton>
+                        <FlashcardsButton style={{backgroundColor: black}}
+                                          onPress={() => this.goToQuiz(deck.id)}
+                                          disabled={!(noOfCards > 0)}>
+                          <Text>Start Quiz</Text>
+                        </FlashcardsButton>
+                    </View>
                 </View>
             </View>
         )
@@ -116,14 +119,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+
+    },
+    buttonsContainerCenter: {
+        flex: 2,
+        justifyContent: 'flex-start',
+        alignItems: 'center'
     },
     decks: {
-        marginBottom: 30,
+        flex: 1,
+        marginTop: 100,
     },
     title: {
         fontSize: 30,
         fontWeight: "bold",
-        fontFamily: "Arial"
+        fontFamily: "Arial",
     },
     subtitle: {
         fontFamily: "Arial",
