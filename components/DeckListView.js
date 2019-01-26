@@ -77,7 +77,7 @@ class DeckListView extends Component{
                         <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
                             <Text style={styles.title}>{deck.title}</Text>
                         </TouchableOpacity>
-                        <Text>No of Cards: {deck.noOfCards}</Text>
+                        <Text>Cards: {deck.noOfCards}</Text>
                     </View>
                 ))}
             </ScrollView>
