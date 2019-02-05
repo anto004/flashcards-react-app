@@ -1,39 +1,50 @@
-import {ADD_ALL_DECKS, ADD_DECK, ADD_CARD, ADD_ALL_CARDS} from "../actions";
+import {
+  ADD_ALL_DECKS,
+  ADD_DECK,
+  ADD_CARD,
+  ADD_ALL_CARDS,
+  DELETE_DECK
+} from "../actions";
 
 export const DECK = "deck";
 export const CARD = "card";
 
 const initialDeckState = {
-    deck: [],
-    card: []
+  deck: [],
+  card: []
 };
 
 export const reducer = (state = initialDeckState, action) => {
-    const {decks, deck, card, cards} = action;
+  const {decks, deck, card, cards} = action;
 
-    switch(action.type){
-        case ADD_ALL_DECKS:
-            return {
-                ...state,
-                [DECK]: decks
-            };
-        case ADD_DECK:
-            return{
-                ...state,
-                [DECK]: state[DECK].concat([deck])
-            };
+  switch (action.type) {
+    case ADD_ALL_DECKS:
+      return {
+        ...state,
+        [DECK]: decks
+      };
+    case ADD_DECK:
+      return {
+        ...state,
+        [DECK]: state[DECK].concat([deck])
+      };
 
-        case ADD_CARD:
-            return{
-                ...state,
-                [CARD]: state[CARD].concat([card])
-            };
-        case ADD_ALL_CARDS:
-            return{
-                ...state,
-                [CARD]: state[CARD].concat(cards)
-            };
-        default:
-            return state;
-    }
+    case ADD_CARD:
+      return {
+        ...state,
+        [CARD]: state[CARD].concat([card])
+      };
+    case ADD_ALL_CARDS:
+      return {
+        ...state,
+        [CARD]: state[CARD].concat(cards)
+      };
+    case DELETE_DECK:
+      return {
+        ...state,
+        [DECK]: state[DECK].filter((currentDeck) => currentDeck.id !== deck.id)
+      };
+    default:
+      return state;
+  }
 };
