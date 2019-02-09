@@ -71,7 +71,6 @@ class NewCard extends Component{
                         <Text>Submit</Text>
                     </FlashcardsButton>
                 </View>
-              <View></View>
             </KeyboardAvoidingView>
         );
     }

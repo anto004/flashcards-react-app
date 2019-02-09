@@ -13,6 +13,13 @@ export async function fetchFlashCardResults() {
     }
 }
 
+export function removeAllFlashCards() {
+  return AsyncStorage.removeItem(FLASHCARD_KEY)
+      .then((results) => {
+        console.log("Removed all flashcards", results)
+      })
+}
+
 export const saveDeck = (id, title) => {
     const deck = {
         [title]: {
@@ -21,10 +28,9 @@ export const saveDeck = (id, title) => {
             "cards": []
         }};
 
-    return AsyncStorage.mergeItem(FLASHCARD_KEY, JSON.stringify(deck),
-        () => {
+    return AsyncStorage.mergeItem(FLASHCARD_KEY, JSON.stringify(deck), () => {
                 AsyncStorage.getItem(FLASHCARD_KEY, (err, results) => {
-                    console.log("saveDeckTile merge results", results)
+                    console.log("saveDeck: ", results)
                 })
         });
 };
@@ -39,21 +45,22 @@ export const saveCard = (deckId, card) => {
                 }
             });
             //save new flashcards to database
-            return AsyncStorage.mergeItem(FLASHCARD_KEY, JSON.stringify(decks),
-                () => {
+            return AsyncStorage.mergeItem(FLASHCARD_KEY, JSON.stringify(decks), () => {
                     AsyncStorage.getItem(FLASHCARD_KEY, (err, results) => {
-                        console.log("saveDeckTile merge results", results)
+                        console.log("saveCard: ", results)
                     })
                 });
         });
 };
 
-export function removeAllFlashCards() {
-    return AsyncStorage.removeItem(FLASHCARD_KEY)
-        .then((results) => {
-            console.log("Removed all flashcards", results)
-        })
-}
+export const deleteDeckAPI = (deck) => {
+  fetchFlashCardResults()
+      .then((results) => {
+        var copyDecks = JSON.parse(results);
+        delete copyDecks[deck.title];
 
+        AsyncStorage.setItem(FLASHCARD_KEY, JSON.stringify(copyDecks))
+      })
+};
 
 

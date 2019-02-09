@@ -8,6 +8,7 @@ import {black, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {clearLocalNotification, setLocalNotification} from "../utils/helpers";
 import {AppLoading} from 'expo';
+import {deleteDeckAPI} from "../utils/api";
 
 class DeckView extends Component {
 
@@ -67,13 +68,11 @@ class DeckView extends Component {
     this.setState({
       isReady: false
     });
-
     // from redux
     this.props.boundDeleteDeck(deck);
-
-    // from asyncstorage
-
-    //goback
+    // from database
+    deleteDeckAPI(deck);
+    //go back to DeckListView
     this.props.navigation.goBack();
   };
 
