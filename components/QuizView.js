@@ -183,7 +183,7 @@ class QuizView extends Component{
     };
 
     percentageCalculation = (totalCards) => {
-        const percentage = (this.state.correctCount / totalCards) * 100;
+        const percentage = Math.ceil((this.state.correctCount / totalCards) * 100);
         return percentage >= 50 ? `You scored ${percentage}% 👍` : `You scored ${percentage}%📚`;
     };
 
