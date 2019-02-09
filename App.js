@@ -57,7 +57,7 @@ const MainNavigator = createStackNavigator({
     Decks: {
         screen: DeckListView,
         navigationOptions: ({navigation}) => ({
-            title: "Decks",
+            title: "FlashQ",
             headerTitleStyle: {
                 position: "absolute",
                 top: 0,
