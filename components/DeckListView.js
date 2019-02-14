@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "Arial"
   },
-  subtitle: {
+  cardsNumber: {
     fontFamily: "Arial",
     color: "gray",
   }

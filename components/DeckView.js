@@ -96,15 +96,20 @@ class DeckView extends Component {
             <MaterialCommunityIcons style={styles.delete} name={"minus-circle-outline"} size={32} color={black}/>
           </TouchableOpacity>
           <View style={styles.innerContainer}>
-            <View style={[styles.decks]}>
-              <Text style={styles.title}>{deck.title}</Text>
+            <View style={styles.decks}>
+              <View style={styles.center}>
+                <Text style={styles.title}>{deck.title}</Text>
+              </View>
 
-              <TouchableOpacity onPress={() => this.goToCardListView()}>
-                <Text style={styles.subtitle}>
-                  Cards: {noOfCards}
-                </Text>
+              <TouchableOpacity
+                  style={styles.cardsButton}
+                  onPress={() => this.goToCardListView()}>
+                <View style={styles.center}>
+                  <Text style={styles.cardsNumber}>
+                    Cards: {noOfCards}
+                  </Text>
+                </View>
               </TouchableOpacity>
-
             </View>
 
             <View style={styles.buttonsContainerCenter}>
@@ -159,14 +164,16 @@ const styles = StyleSheet.create({
   },
   decks: {
     flex: 1,
-    marginTop: 100,
+    marginTop: 80,
+    justifyContent: "flex-start",
   },
   title: {
     fontSize: 30,
     fontWeight: "bold",
     fontFamily: "Arial",
+    textAlign: "center",
   },
-  subtitle: {
+  cardsNumber: {
     fontFamily: "Arial",
     color: "gray",
     textAlign: "center",
@@ -174,6 +181,20 @@ const styles = StyleSheet.create({
   delete: {
     alignSelf: "flex-end",
     margin: 10
+  },
+  cardsButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 80,
+    height: 25,
+    borderRadius: 3,
+    borderWidth: 1,
+    margin: 5,
+    borderColor: black,
+  },
+  center: {
+    justifyContent: "center",
+    alignItems: "center",
   }
 });
 
