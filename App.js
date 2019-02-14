@@ -5,6 +5,7 @@ import {Provider} from "react-redux";
 import {reducer} from "./reducers/index";
 import {logger} from "redux-logger";
 import DeckListView from "./components/DeckListView";
+import CardListView from "./components/CardListView";
 import {Constants} from "expo";
 import {black, darkGreen, lightGray, lightYellow, white} from "./utils/colors";
 import {createStackNavigator} from "react-navigation";
@@ -77,7 +78,10 @@ const MainNavigator = createStackNavigator({
     },
     Quiz: {
         screen: QuizView
-    }
+    },
+    CardList: {
+        screen: CardListView
+    },
 });
 
 
