@@ -76,9 +76,11 @@ class DeckView extends Component {
     this.props.navigation.goBack();
   };
 
-  goToCardListView = () => {
+  goToCardListView = (deckId) => {
     const {navigation} = this.props;
-    navigation.navigate("CardList");
+    navigation.navigate(
+        "CardList",
+        deckId);
   };
 
   render() {
@@ -103,7 +105,7 @@ class DeckView extends Component {
 
               <TouchableOpacity
                   style={styles.cardsButton}
-                  onPress={() => this.goToCardListView()}>
+                  onPress={() => this.goToCardListView(deck.id)}>
                 <View style={styles.center}>
                   <Text style={styles.cardsNumber}>
                     Cards: {noOfCards}
