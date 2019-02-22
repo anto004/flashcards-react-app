@@ -3,6 +3,7 @@ export const ADD_DECK = "ADD_DECK";
 export const ADD_CARD = "ADD_CARD";
 export const ADD_ALL_CARDS = "ADD_ALL_CARDS";
 export const DELETE_DECK = "DELETE_DECK";
+export const DELETE_CARD = "DELETE_CARD";
 
 /**
  *
@@ -52,4 +53,14 @@ export const addAllCards = (cards) => ({
 export const deleteDeck = (deck) => ({
   type: DELETE_DECK,
   deck
+});
+
+/**
+ *
+ * @param card
+ * @returns {{type: string, card: *}}
+ */
+export const deleteCard = (card) => ({
+  type: DELETE_CARD,
+  card
 });

@@ -4,6 +4,7 @@ import {connect}from "react-redux";
 import {CARD} from "../reducers";
 import {black, lightGray, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {deleteCard} from "../actions";
 
 class CardListView extends Component{
 
@@ -21,6 +22,7 @@ class CardListView extends Component{
 
   render(){
     const {cards} = this.props;
+    const {boundDeleteCard} = this.props;
     return(
         <ScrollView contentContainerStyle={styles.outerContainer}>
           {cards.map((card) => (
@@ -33,6 +35,7 @@ class CardListView extends Component{
                   <MaterialCommunityIcons
                       name="minus-circle-outline"
                       size={25}
+                      onPress={() => boundDeleteCard(card)}
                   />
                 </TouchableOpacity>
               </View>
@@ -52,6 +55,7 @@ function mapStateToProps(state, props){
 
 function dispatchStateToProps(dispatch){
   return {
+    boundDeleteCard: (card) => dispatch(deleteCard(card))
   }
 }
 
