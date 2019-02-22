@@ -5,6 +5,7 @@ import {CARD} from "../reducers";
 import {black, lightGray, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {deleteCard} from "../actions";
+import {deleteCardAPI} from "../utils/api";
 
 class CardListView extends Component{
 
@@ -19,6 +20,13 @@ class CardListView extends Component{
       }
     }
   }
+
+  deleteCard = (card) => {
+    //delete Card from Redux
+    this.props.boundDeleteCard(card);
+    //delete Card from AsyncStorage
+    deleteCardAPI(card);
+  };
 
   render(){
     const {cards} = this.props;
@@ -35,7 +43,7 @@ class CardListView extends Component{
                   <MaterialCommunityIcons
                       name="minus-circle-outline"
                       size={25}
-                      onPress={() => boundDeleteCard(card)}
+                      onPress={() => this.deleteCard(card)}
                   />
                 </TouchableOpacity>
               </View>

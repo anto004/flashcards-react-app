@@ -63,4 +63,19 @@ export const deleteDeckAPI = (deck) => {
       })
 };
 
+export const deleteCardAPI = (card) => {
+  fetchFlashCardResults()
+      .then((results) => {
+        var copyDecks = JSON.parse(results);
+        var deckId = card.deckId;
+
+        Object.keys(copyDecks).map((deck) => {
+          if(copyDecks[deck].id === deckId){
+            copyDecks[deck].cards = copyDecks[deck].cards.filter((currentCard) => currentCard.id !== card.id);
+          }
+        });
+        AsyncStorage.setItem(FLASHCARD_KEY, JSON.stringify(copyDecks));
+      })
+};
+
 
