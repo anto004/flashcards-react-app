@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, TextInput} from "react-native";
 import {connect} from "react-redux";
 import {DECK, CARD} from "../reducers";
 import {deleteDeck} from "../actions";
@@ -14,6 +14,8 @@ class DeckView extends Component {
 
   state = {
     isReady: true,
+    changeToInput: false,
+    inputValue: "",
   };
   //Programmatically adding title to header
   static navigationOptions = ({navigation}) => {
@@ -58,12 +60,6 @@ class DeckView extends Component {
         .then(setLocalNotification)
   };
 
-  deleteCard = (id) => {
-    //TODO: delete card
-    // from redux
-    // from asyncstorage
-  };
-
   deleteDeck = (deck) => {
     this.setState({
       isReady: false
@@ -86,9 +82,28 @@ class DeckView extends Component {
         });
   };
 
+  editTitle = (title) => {
+    this.setState({
+      inputValue: title,
+      changeToInput: true,
+    })
+  };
+
+  handleChangeText = (text) => {
+    this.setState({
+      inputValue: text
+    })
+  };
+
+  submitText = () => {
+    this.setState({
+      changeToInput: false
+    })
+  };
+
   render() {
     const {deck, cards} = this.props;
-    const {isReady} = this.state;
+    const {isReady, changeToInput, inputValue} = this.state;
     const noOfCards = cards.length;
 
     if(!isReady){
@@ -102,8 +117,23 @@ class DeckView extends Component {
           </TouchableOpacity>
           <View style={styles.innerContainer}>
             <View style={styles.decks}>
+
               <View style={styles.center}>
-                <Text style={styles.title}>{deck.title}</Text>
+                {changeToInput &&
+                  <TextInput
+                      style={styles.editTitle}
+                      underLineColorAndroid='transparent'
+                      value={inputValue}
+                      onChangeText={(text) => this.handleChangeText(text)}
+                      maxLength={130}
+                      onSubmitEditing={() => this.submitText()}/>
+                }
+                {!changeToInput &&
+                  <TouchableOpacity
+                      onLongPress={() => this.editTitle(deck.title)}>
+                    <Text style={styles.title}>{deck.title}</Text>
+                  </TouchableOpacity>
+                }
               </View>
 
               <TouchableOpacity
@@ -177,6 +207,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "Arial",
     textAlign: "center",
+  },
+  editTitle: {
+    fontFamily: "Arial",
+    textAlign: "center",
+    height: 30,
+    width: 100,
   },
   cardsNumber: {
     fontFamily: "Arial",
