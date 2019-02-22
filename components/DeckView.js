@@ -80,7 +80,10 @@ class DeckView extends Component {
     const {navigation} = this.props;
     navigation.navigate(
         "CardList",
-        deckId);
+        {
+          title: "Cards",
+          deckId
+        });
   };
 
   render() {
