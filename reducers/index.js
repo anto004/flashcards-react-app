@@ -5,6 +5,7 @@ import {
   ADD_ALL_CARDS,
   DELETE_DECK,
   DELETE_CARD,
+  EDIT_DECK_TITLE,
 } from "../actions";
 
 export const DECK = "deck";
@@ -49,6 +50,16 @@ export const reducer = (state = initialDeckState, action) => {
       return{
         ...state,
         [CARD]: state[CARD].filter((currentCard) => currentCard.id !== card.id)
+      };
+    case EDIT_DECK_TITLE:
+      return {
+        ...state,
+        [DECK]: state[DECK].filter((currentDeck) => {
+          if(currentDeck.id === deck.id){
+            return deck;
+          }
+          return currentDeck;
+        })
       };
     default:
       return state;

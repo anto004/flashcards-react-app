@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {View, Text, StyleSheet, TouchableOpacity, TextInput} from "react-native";
 import {connect} from "react-redux";
 import {DECK, CARD} from "../reducers";
-import {deleteDeck} from "../actions";
+import {deleteDeck, editDeckTitle} from "../actions";
 import FlashcardsButton from "./FlashcardsButton";
 import {black, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
@@ -95,10 +95,14 @@ class DeckView extends Component {
     })
   };
 
-  submitText = () => {
+  submitText = (deck) => {
     this.setState({
       changeToInput: false
-    })
+    });
+    //Set new input text value as new deck title
+    deck.title = this.state.inputValue;
+    //Edit To Redux
+    this.props.boundEditDeckTitle(deck);
   };
 
   render() {
@@ -126,7 +130,7 @@ class DeckView extends Component {
                       value={inputValue}
                       onChangeText={(text) => this.handleChangeText(text)}
                       maxLength={130}
-                      onSubmitEditing={() => this.submitText()}/>
+                      onSubmitEditing={() => this.submitText(deck)}/>
                 }
                 {!changeToInput &&
                   <TouchableOpacity
@@ -174,7 +178,8 @@ function mapStateToProps(state, {navigation}) {
 
 function dispatchStateToProps(dispatch) {
   return {
-    boundDeleteDeck: (deck) => dispatch(deleteDeck(deck))
+    boundDeleteDeck: (deck) => dispatch(deleteDeck(deck)),
+    boundEditDeckTitle: (deck) => dispatch(editDeckTitle(deck))
   }
 }
 
