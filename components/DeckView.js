@@ -8,7 +8,7 @@ import {black, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {clearLocalNotification, setLocalNotification} from "../utils/helpers";
 import {AppLoading} from 'expo';
-import {deleteDeckAPI} from "../utils/api";
+import {deleteDeckAPI, editDeckAPI} from "../utils/api";
 
 class DeckView extends Component {
 
@@ -104,7 +104,7 @@ class DeckView extends Component {
     //Edit To Redux
     this.props.boundEditDeckTitle(deck);
     //Edit to AsyncStorage
-
+    editDeckAPI(deck);
   };
 
   render() {

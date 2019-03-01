@@ -78,4 +78,26 @@ export const deleteCardAPI = (card) => {
       })
 };
 
+export const editDeckAPI = (deck) => {
+  fetchFlashCardResults()
+      .then((results) => {
+        var decks = JSON.parse(results);
+        var copyDeck = {};
+        Object.keys(decks).map((currentDeck) => {
+          if(decks[currentDeck].id === deck.id){
+            copyDeck = {
+                ...decks[currentDeck]
+            };
+            //Update title
+            copyDeck.title = deck.title;
+            delete decks[currentDeck];
+          }
+        });
+        //Update property name to new title
+        decks[deck.title] = copyDeck;
+
+        AsyncStorage.setItem(FLASHCARD_KEY, JSON.stringify(decks))
+      })
+};
+
 
