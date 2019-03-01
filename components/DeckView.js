@@ -103,6 +103,8 @@ class DeckView extends Component {
     deck.title = this.state.inputValue;
     //Edit To Redux
     this.props.boundEditDeckTitle(deck);
+    //Edit to AsyncStorage
+
   };
 
   render() {
@@ -138,17 +140,19 @@ class DeckView extends Component {
                     <Text style={styles.title}>{deck.title}</Text>
                   </TouchableOpacity>
                 }
+
+                <TouchableOpacity
+                    style={styles.cardsButton}
+                    onPress={() => this.goToCardListView(deck.id)}>
+                  <View style={styles.center}>
+                    <Text style={styles.cardsNumber}>
+                      Cards: {noOfCards}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
 
-              <TouchableOpacity
-                  style={styles.cardsButton}
-                  onPress={() => this.goToCardListView(deck.id)}>
-                <View style={styles.center}>
-                  <Text style={styles.cardsNumber}>
-                    Cards: {noOfCards}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+
             </View>
 
             <View style={styles.buttonsContainerCenter}>
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
   },
   decks: {
     flex: 1,
-    marginTop: 80,
+    marginTop: 75,
     justifyContent: "flex-start",
   },
   title: {
@@ -235,7 +239,7 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 3,
     borderWidth: 1,
-    margin: 5,
+    marginTop: 10,
     borderColor: black,
   },
   center: {
