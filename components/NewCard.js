@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       textAlign: "center",
       paddingTop: 40,
-      fontSize: 32,
+      fontSize: 30,
       fontWeight: "bold",
       backgroundColor: "white"
     },

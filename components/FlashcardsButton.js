@@ -18,11 +18,11 @@ export default FlashcardsButton = ({children, style, onPress, ...props}) => {
 
 const styles = StyleSheet.create({
     button: {
-        width: 160,
-        height: 60,
+        width: 140,
+        height: 50,
         borderRadius: 4,
         padding: 15,
-        margin: 10,
+        margin: 4,
         borderWidth: 2,
         borderColor: black,
 

@@ -150,7 +150,7 @@ class QuizView extends Component{
     flipCardBack = () => {
         const setInterpolateBack = this.animatedValue.interpolate({
             inputRange: [0, 45, 90, 135, 180, 225, 270, 315],
-            outputRange: ["180deg","135deg", "90deg", "45deg", "0deg", "45deg", "900deg", "135deg"]
+            outputRange: ["180deg","135deg", "90deg", "45deg", "0deg", "45deg", "90deg", "135deg"]
         });
        return {
            transform: [
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     cardsCount: {
         alignSelf: "flex-start",
         margin: 10,
-        fontSize: 22,
+        fontSize: 18,
         color: black,
     },
     modalContent: {
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     },
     title: {
         alignSelf: "center",
-        fontSize: 26,
+        fontSize: 30,
         fontWeight: "bold",
     },
 });
