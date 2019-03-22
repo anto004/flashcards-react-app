@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Animated,
     Dimensions,
-    PanResponder, TouchableOpacity
+    PanResponder,
+    TouchableOpacity
 } from "react-native";
 import {connect} from "react-redux";
 import{CARD} from "../reducers";
@@ -16,7 +17,7 @@ import {Ionicons} from "@expo/vector-icons";
 
 
 class QuizView extends Component{
-
+    //TODO: When moving to next card open question card
     state = {
         index: 0,
         value: 0,
@@ -206,14 +207,20 @@ class QuizView extends Component{
                     {this.state.value >= 0 && this.state.value <= 90
                         ? <Animated.View
                             {...this.flashcardPanResponder.panHandlers}
-                            style={[{left: this.flashcardPos}, this.flipCardFront(), styles.flashcard]}>
+                            style={[{left: this.flashcardPos}, this.flipCardFront(), styles.flashcardContainer]}>
+                            <Text style={styles.flashcardQATitle}>
+                                Question
+                            </Text>
                             <Text style={styles.flashcardText}>
                                 {cards[this.state.index].question}
                             </Text>
                         </Animated.View>
                         : <Animated.View
                             {...this.flashcardPanResponder.panHandlers}
-                            style={[{left: this.flashcardPos}, this.flipCardBack(), styles.flashcard]}>
+                            style={[{left: this.flashcardPos}, this.flipCardBack(), styles.flashcardContainer]}>
+                            <Text style={styles.flashcardQATitle}>
+                                Answer
+                            </Text>
                             <Text style={styles.flashcardText}>
                                 {cards[this.state.index].answer}
                             </Text>
@@ -241,7 +248,6 @@ class QuizView extends Component{
                         <Text style={{fontSize: 22}}>{this.percentageCalculation(totalCards)}</Text>
                     </View>
                 </Modal>
-
             </View>
         )
     }
@@ -257,22 +263,27 @@ const styles = StyleSheet.create({
     innerContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        marginTop: 0, //Add margin
     },
-    flashcard: {
-        //TODO: Add shadow effect
-        justifyContent: "center",
+    flashcardContainer: {
+        justifyContent: "flex-start",
         alignItems: "center",
-        margin: 15,
+        margin: 25,
         padding: 15,
         width: 300,
         height: 200,
         borderRadius: 4,
         backgroundColor: lightYellow,
     },
+    flashcardQATitle: {
+        alignSelf: "flex-start",
+        fontWeight: "bold",
+    },
     flashcardText: {
         fontFamily: "Arial",
         fontSize: 24,
+        marginTop: 10,
     },
     cardsCount: {
         alignSelf: "flex-start",
