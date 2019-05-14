@@ -17,7 +17,6 @@ import {Ionicons} from "@expo/vector-icons";
 
 
 class QuizView extends Component{
-    //TODO: When moving to next card open question card
     state = {
         index: 0,
         value: 0,
@@ -34,7 +33,7 @@ class QuizView extends Component{
     }
 
     static navigationOptions = ({navigation}) => {
-        const {title: titleValue}= navigation.state.params;
+        const {title: titleValue} = navigation.state.params;
         return {
             title: titleValue ? titleValue : "",
             headerTitleStyle: {
@@ -95,9 +94,6 @@ class QuizView extends Component{
             return;
         }
 
-        this.setState(() => ({
-            index: nextIndex
-        }));
         //animate from edge to 0
         this.flashcardPos.setValue(indexDirection * this.screenWidth);
         Animated.spring(
@@ -107,6 +103,17 @@ class QuizView extends Component{
                 duration: 250
             }
         ).start();
+
+        //Move to next card and flip card to Question Card
+        this.setState({index: nextIndex},
+            this.checkCardFlipped()
+        )
+    };
+
+    checkCardFlipped = () => {
+        if(this.state.value !== 0){
+            this.flipCardAnimation();
+        }
     };
 
     flipCardAnimation = () => {
@@ -170,7 +177,12 @@ class QuizView extends Component{
         }
 
         this.setState((prevState) => ({
-            index: prevState.index + 1}));
+            index: prevState.index + 1
+        }));
+
+        this.setState(() => ({
+            value: 0
+        }))
     };
 
     incorrectHandle = (cardsSoFar, totalCards) => {
