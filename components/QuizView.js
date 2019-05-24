@@ -178,11 +178,7 @@ class QuizView extends Component{
 
         this.setState((prevState) => ({
             index: prevState.index + 1
-        }));
-
-        this.setState(() => ({
-            value: 0
-        }))
+        }), this.checkCardFlipped());
     };
 
     incorrectHandle = (cardsSoFar, totalCards) => {
@@ -192,7 +188,8 @@ class QuizView extends Component{
         }
 
         this.setState((prevState) => ({
-            index: prevState.index + 1}));
+            index: prevState.index + 1
+        }), this.checkCardFlipped());
     };
 
     percentageCalculation = (totalCards) => {
