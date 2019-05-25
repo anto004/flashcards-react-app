@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {DECK, CARD} from "../reducers";
 import {deleteDeck, editDeckTitle} from "../actions";
 import FlashcardsButton from "./FlashcardsButton";
-import {black, white} from "../utils/colors";
+import {black, white, greenBlack} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {clearLocalNotification, setLocalNotification} from "../utils/helpers";
 import {AppLoading} from 'expo';
@@ -25,7 +25,8 @@ class DeckView extends Component {
       headerTitleStyle: {
         fontFamily: "coolvetica-rg",
         fontSize: 30,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: greenBlack,
       }
     }
   };

@@ -3,7 +3,7 @@ import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView} from "react-nat
 import {connect} from "react-redux";
 import {addCard, addDeck, addAllCards} from "../actions";
 import {saveCard} from "../utils/api"
-import {black, white} from "../utils/colors";
+import {black, white, greenBlack} from "../utils/colors";
 import FlashcardsButton from "./FlashcardsButton";
 
 
@@ -19,7 +19,8 @@ class NewCard extends Component{
             title: titleValue ? titleValue : "",
             headerTitleStyle: {
                 fontSize: 30,
-                fontWeight: "bold"
+                fontWeight: "bold",
+                color: greenBlack,
             }
         }
     };

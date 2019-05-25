@@ -11,7 +11,7 @@ import {
 import {connect} from "react-redux";
 import{CARD} from "../reducers";
 import FlashcardsButton from "./FlashcardsButton";
-import {black, darkGray, green, lightYellow, red, white} from "../utils/colors";
+import {black, darkGray, green, lightYellow, red, white, greenBlack} from "../utils/colors";
 import Modal from "react-native-modal";
 import {Ionicons} from "@expo/vector-icons";
 
@@ -38,7 +38,8 @@ class QuizView extends Component{
             title: titleValue ? titleValue : "",
             headerTitleStyle: {
                 fontSize: 30,
-                fontWeight: "bold"
+                fontWeight: "bold",
+                color: greenBlack,
             }
         }
     };

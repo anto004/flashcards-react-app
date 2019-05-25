@@ -6,6 +6,7 @@ import {black, lightGray, white} from "../utils/colors";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
 import {deleteCard} from "../actions";
 import {deleteCardAPI} from "../utils/api";
+import {greenBlack} from "../utils/colors";
 
 class CardListView extends Component{
 
@@ -17,6 +18,7 @@ class CardListView extends Component{
         fontFamily: "coolvetica-rg",
         fontSize: 30,
         fontWeight: "bold",
+        color: greenBlack,
       }
     }
   }

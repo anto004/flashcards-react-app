@@ -6,6 +6,7 @@ import {fetchFlashCardResults} from "../utils/api";
 import {addAllCards, addCard, addDeck} from "../actions";
 import {lightGray} from "../utils/colors";
 import {AppLoading, Font} from "expo";
+import {darkGreen, green, greenBlack} from "../utils/colors";
 
 class DeckListView extends Component {
   state = {
@@ -19,6 +20,7 @@ class DeckListView extends Component {
         fontFamily: font ? font.name : "Arial",
         fontSize: 52,
         textAlign: "center",
+        color: greenBlack,
       }
     }
   };
@@ -77,7 +79,7 @@ class DeckListView extends Component {
                 <TouchableOpacity onPress={() => this.goToDeck(deck.id)}>
                   <Text style={styles.title}>{deck.title}</Text>
                 </TouchableOpacity>
-                <Text>Cards: {deck.noOfCards}</Text>
+                <Text>Cards {deck.noOfCards}</Text>
               </View>
           ))}
         </ScrollView>

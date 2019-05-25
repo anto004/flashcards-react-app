@@ -7,7 +7,7 @@ import {logger} from "redux-logger";
 import DeckListView from "./components/DeckListView";
 import CardListView from "./components/CardListView";
 import {Constants} from "expo";
-import {black, darkGreen, lightGray, lightYellow, white} from "./utils/colors";
+import {black, darkGreen, lightGray, lightYellow, white, greenBlack} from "./utils/colors";
 import {createStackNavigator} from "react-navigation";
 import QuizView from "./components/QuizView";
 import NewCard from "./components/NewCard";
@@ -62,7 +62,8 @@ const MainNavigator = createStackNavigator({
             headerTitleStyle: {
                 position: "absolute",
                 top: 0,
-                fontSize: 35
+                fontSize: 35,
+                color: greenBlack,
             },
             headerRight: <GoToNewDeck navigate={navigation.navigate}/>
         })

@@ -3,7 +3,7 @@ import {View, Text, TextInput, StyleSheet, KeyboardAvoidingView} from "react-nat
 import {connect} from "react-redux";
 import {addDeck} from "../actions";
 import {saveDeck} from "../utils/api"
-import {black, white} from "../utils/colors";
+import {black, white, greenBlack} from "../utils/colors";
 import FlashcardsButton from "./FlashcardsButton";
 
 
@@ -17,7 +17,8 @@ class NewDeck extends Component{
             title: "Deck",
             headerTitleStyle: {
                 fontSize: 30,
-                fontWeight: "bold"
+                fontWeight: "bold",
+                color: greenBlack,
             }
         }
     };
